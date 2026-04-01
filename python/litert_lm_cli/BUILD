@@ -149,6 +149,7 @@ py_wheel(
     platform = "any",
     python_tag = "py3",
     summary = "LiteRT-LM command line tool",
+    description_file = "README.md",
     license = "Apache-2.0",
     homepage = "https://github.com/google-ai-edge/LiteRT-LM",
     classifiers = [
