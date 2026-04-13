@@ -133,5 +133,11 @@ apple_static_xcframework(
         "simulator": ["arm64"],
     },
     deps = [":engine_cpu"],
+    avoid_deps = [
+        # Exclut les prebuilt dylibs LFS du link -- non compatibles libtool
+        # Source : constrained_decoding/BUILD lignes 131-138
+        "//runtime/components/constrained_decoding:gemma_model_constraint_provider_shared_lib",
+        "//runtime/components/constrained_decoding:gemma_model_constraint_provider_lib",
+    ],
     visibility = ["//visibility:public"],
 )
