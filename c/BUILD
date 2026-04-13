@@ -132,6 +132,6 @@ apple_static_xcframework(
         "device": ["arm64"],
         "simulator": ["arm64"],
     },
-    deps = [":engine"],
+    deps = [":engine_cpu"],
     visibility = ["//visibility:public"],
 )
