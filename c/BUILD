@@ -111,3 +111,27 @@ cc_test(
         "//runtime/executor:llm_executor_settings",
     ],
 )
+
+# ============================================================
+# Lillup -- xcframework iOS natif Bazel
+# Source : rules_apple 3.22.0 [WORKSPACE ligne 49]
+# apple_support 1.23.1 [WORKSPACE ligne 70]
+# Approuve panel auditeurs -- Architecture v2.0 -- 13 avril 2026
+# ============================================================
+load(
+    "@build_bazel_rules_apple//apple:apple.bzl",
+    "apple_static_xcframework",
+)
+
+apple_static_xcframework(
+    name = "LiteRTLM_xcframework",
+    bundle_name = "LiteRTLM",
+    hdrs = ["engine.h"],
+    minimum_os_versions = {"ios": "15.0"},
+    ios = {
+        "device": ["arm64"],
+        "simulator": ["arm64"],
+    },
+    deps = [":engine"],
+    visibility = ["//visibility:public"],
+)
