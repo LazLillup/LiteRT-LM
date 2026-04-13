@@ -126,7 +126,7 @@ load(
 apple_static_xcframework(
     name = "LiteRTLM_xcframework",
     bundle_name = "LiteRTLM",
-    hdrs = ["engine.h"],
+    public_hdrs = ["engine.h"],
     minimum_os_versions = {"ios": "15.0"},
     ios = {
         "device": ["arm64"],
