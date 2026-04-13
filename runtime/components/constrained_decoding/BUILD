@@ -134,8 +134,8 @@ cc_library(
         "//build_config:android_x86_64": ["//prebuilt/android_x86_64:libGemmaModelConstraintProvider.so"],
         "//build_config:linux_x86_64": ["//prebuilt/linux_x86_64:libGemmaModelConstraintProvider.so"],
         "//build_config:linux_arm64": ["//prebuilt/linux_arm64:libGemmaModelConstraintProvider.so"],
-        "//build_config:ios_sim_arm64": ["//prebuilt/ios_sim_arm64:libGemmaModelConstraintProvider.dylib"],
-        "//build_config:ios_arm64": ["//prebuilt/ios_arm64:libGemmaModelConstraintProvider.dylib"],
+        "//build_config:ios_sim_arm64": [],  # Lillup: LFS stub incompatible avec libtool
+        "//build_config:ios_arm64": [],  # Lillup: LFS stub incompatible avec libtool
         "@platforms//os:macos": ["//prebuilt/macos_arm64:libGemmaModelConstraintProvider.dylib"],
         "@platforms//os:windows": [],
         "//conditions:default": [],
