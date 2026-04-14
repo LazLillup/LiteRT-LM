@@ -25,6 +25,7 @@ import click
 import litert_lm
 from litert_lm_cli import help_formatter
 from litert_lm_cli import model
+from litert_lm_cli import serve as _serve_module
 from litert_lm_cli import venv_manager
 from litert_lm_cli import version
 
@@ -41,6 +42,9 @@ from litert_lm_cli import version
 @click.version_option(version=version.VERSION)
 def cli():
   """CLI tool for LiteRT-LM models."""
+
+
+_serve_module.register(cli)
 
 
 @cli.command(name="list")
