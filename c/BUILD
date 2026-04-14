@@ -129,7 +129,7 @@ cc_test(
 cc_library(
     name = "lillup_xcfw_deps",
     deps = [
-        "@com_google_absl//absl/base:leak_check",
+        "@com_google_absl//absl/debugging:leak_check",
         "@com_google_absl//absl/status",
         "@com_google_absl//absl/status:statusor",
         "@com_google_absl//absl/strings",
