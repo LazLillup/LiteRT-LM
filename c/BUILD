@@ -113,6 +113,38 @@ cc_test(
 )
 
 # ============================================================
+# Lillup -- deps manquantes pour le xcframework iOS
+# Root cause : apple_static_xcframework ne compile pas les archives
+#   absl/status, absl/synchronization, absl/strings, absl/time,
+#   protobuf_lite, protobuf, sentencepiece_processor
+#   car ces targets ont alwayslink=False dans le graphe Bazel.
+# Prouve : absents des 526 archives bazel-out/ -- diag E2.1
+# Solution [BZ-02 + rules_ios#1938] : alwayslink=True force
+#   l inclusion de toutes les deps dans l archive xcframework.
+# Sources :
+#   @com_google_absl : WORKSPACE global [G-05]
+#   @com_google_protobuf : tf_workspace2() WORKSPACE l.182
+#   @sentencepiece : BUILD.sentencepiece l.24
+# ============================================================
+cc_library(
+    name = "lillup_xcfw_deps",
+    deps = [
+        "@com_google_absl//absl/base:leak_check",
+        "@com_google_absl//absl/status",
+        "@com_google_absl//absl/status:statusor",
+        "@com_google_absl//absl/strings",
+        "@com_google_absl//absl/strings:str_format",
+        "@com_google_absl//absl/synchronization",
+        "@com_google_absl//absl/time",
+        "@com_google_protobuf//:protobuf_lite",
+        "@com_google_protobuf//:protobuf",
+        "@sentencepiece//:sentencepiece_processor",
+    ],
+    alwayslink = True,
+    visibility = ["//visibility:public"],
+)
+
+# ============================================================
 # Lillup -- xcframework iOS natif Bazel
 # Source : rules_apple 3.22.0 [WORKSPACE ligne 49]
 # apple_support 1.23.1 [WORKSPACE ligne 70]
@@ -132,7 +164,7 @@ apple_static_xcframework(
         "device": ["arm64"],
         "simulator": ["arm64"],
     },
-    deps = [":engine_cpu"],
+    deps = [":engine_cpu", ":lillup_xcfw_deps"],
     avoid_deps = [
         # Exclut les prebuilt dylibs LFS du link -- non compatibles libtool
         # Source : constrained_decoding/BUILD lignes 131-138
