@@ -69,7 +69,7 @@ build --@rules_python//python/config_settings:precompile=force_disabled
 # nothing in a bazelrc will default to a monolithic build. The following line
 # opts in to modular op registration support by default.
 build --define framework_shared_object=true
-build --define tsl_protobuf_header_only=true
+build --define tsl_protobuf_header_only=false
 
 build --define=allow_oversize_protos=true
 # protobuf will stop supporting MSVC.
