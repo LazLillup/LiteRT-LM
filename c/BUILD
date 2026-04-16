@@ -129,16 +129,20 @@ cc_test(
 cc_library(
     name = "lillup_xcfw_deps",
     deps = [
+        "@com_google_absl//absl/base",
         "@com_google_absl//absl/debugging:leak_check",
         "@com_google_absl//absl/status",
         "@com_google_absl//absl/status:statusor",
         "@com_google_absl//absl/strings",
+        "@com_google_absl//absl/strings:cord",
         "@com_google_absl//absl/strings:str_format",
         "@com_google_absl//absl/synchronization",
         "@com_google_absl//absl/time",
         "@com_google_protobuf//:protobuf_lite",
         "@com_google_protobuf//:protobuf",
         "@sentencepiece//:sentencepiece_processor",
+        "@zlib//:zlib",
+        "@flatbuffers//:runtime_cc",
     ],
     alwayslink = True,
     visibility = ["//visibility:public"],
@@ -165,11 +169,10 @@ apple_static_xcframework(
         "simulator": ["arm64"],
     },
     deps = [":engine_cpu", ":lillup_xcfw_deps"],
-    avoid_deps = [
-        # Exclut les prebuilt dylibs LFS du link -- non compatibles libtool
-        # Source : constrained_decoding/BUILD lignes 131-138
-        "//runtime/components/constrained_decoding:gemma_model_constraint_provider_shared_lib",
-        "//runtime/components/constrained_decoding:gemma_model_constraint_provider_lib",
-    ],
+    # avoid_deps retire (PATCH-L4-XCFW-RUN24500353459-V1) :
+    # Le stub cmake/patches/stubs/BUILD (session 1 commit c951d50) emet
+    # les symboles gemma_model_constraint_provider_* en object code via
+    # runtime/components/constrained_decoding/BUILD srcs iOS selects.
+    # Ces symboles sont compatibles libtool (pas des dylibs LFS).
     visibility = ["//visibility:public"],
 )
