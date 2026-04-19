@@ -188,6 +188,9 @@ build:ios --apple_platform_type=ios
 build:ios --copt=-fembed-bitcode
 build:ios --copt=-Wno-c++11-narrowing
 build:ios --ios_minimum_os=13.0
+# Lillup 2026-04-19 D-26 : active le mecanisme upstream LITERT_DISABLE_NPU
+# sur config iOS pour exclure les guards Qualcomm des .cc (vision/factory/executor).
+build:ios --copt=-DLITERT_DISABLE_NPU=1
 build:ios_armv7 --config=ios
 build:ios_armv7 --cpu=ios_armv7
 build:ios_armv7 --platforms=@org_tensorflow//tensorflow/tools/toolchains/ios:ios_armv7
