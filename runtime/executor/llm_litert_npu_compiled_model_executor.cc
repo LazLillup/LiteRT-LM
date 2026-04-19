@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Lillup 2026-04-19 D-26 F-2-bis : wrapper entier NPU executor sous
+// LITERT_DISABLE_NPU pour aligner avec factory.cc et vision.cc qui
+// wrappent deja leurs usages. Empeche compile et link symboles Qualcomm iOS.
+#if !defined(LITERT_DISABLE_NPU)
+
 #include "runtime/executor/llm_litert_npu_compiled_model_executor.h"
 
 #include <cstdint>
@@ -1812,3 +1817,5 @@ absl::Status LlmLiteRtNpuCompiledModelExecutor::ClearKVCache(
 }
 
 }  // namespace litert::lm
+
+#endif  // !defined(LITERT_DISABLE_NPU)
