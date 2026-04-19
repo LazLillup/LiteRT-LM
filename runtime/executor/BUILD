@@ -373,7 +373,6 @@ cc_library(
         ":llm_executor",
         ":llm_executor_settings",
         ":llm_litert_compiled_model_executor",
-        ":llm_litert_npu_compiled_model_executor",
         "@com_google_absl//absl/algorithm:container",
         "@com_google_absl//absl/status",
         "@com_google_absl//absl/status:statusor",
@@ -382,6 +381,11 @@ cc_library(
         "//runtime/components:model_resources",
         "//runtime/util:litert_status_util",
     ] + select({
+        "@platforms//os:android": [
+            ":llm_litert_npu_compiled_model_executor",
+        ],
+        "//conditions:default": [],
+    }) + select({
         "@litert//litert:litert_link_capi_so": [
             "@litert//litert/cc:litert_api_with_dynamic_runtime",
         ],
