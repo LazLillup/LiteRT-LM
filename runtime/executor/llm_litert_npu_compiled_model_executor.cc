@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if !defined(LITERT_DISABLE_NPU)
+
 #include "runtime/executor/llm_litert_npu_compiled_model_executor.h"
 
 #include <algorithm>
@@ -2986,3 +2988,5 @@ absl::Status LlmLiteRtNpuCompiledModelExecutor::ClearKVCache(
 }
 
 }  // namespace litert::lm
+
+#endif  // !defined(LITERT_DISABLE_NPU)
