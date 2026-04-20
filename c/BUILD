@@ -111,3 +111,68 @@ cc_test(
         "//runtime/executor:llm_executor_settings",
     ],
 )
+
+# ============================================================
+# Lillup -- deps manquantes pour le xcframework iOS
+# Root cause : apple_static_xcframework ne compile pas les archives
+#   absl/status, absl/synchronization, absl/strings, absl/time,
+#   protobuf_lite, protobuf, sentencepiece_processor
+#   car ces targets ont alwayslink=False dans le graphe Bazel.
+# Prouve : absents des 526 archives bazel-out/ -- diag E2.1
+# Solution [BZ-02 + rules_ios#1938] : alwayslink=True force
+#   l inclusion de toutes les deps dans l archive xcframework.
+# Sources :
+#   @com_google_absl : WORKSPACE global [G-05]
+#   @com_google_protobuf : tf_workspace2() WORKSPACE l.182
+#   @sentencepiece : BUILD.sentencepiece l.24
+# ============================================================
+cc_library(
+    name = "lillup_xcfw_deps",
+    srcs = ["//cmake/patches/stubs:gemma_model_constraint_provider.cc"],
+    deps = [
+        "@com_google_absl//absl/base",
+        "@com_google_absl//absl/debugging:leak_check",
+        "@com_google_absl//absl/status",
+        "@com_google_absl//absl/status:statusor",
+        "@com_google_absl//absl/strings",
+        "@com_google_absl//absl/strings:cord",
+        "@com_google_absl//absl/strings:str_format",
+        "@com_google_absl//absl/synchronization",
+        "@com_google_absl//absl/time",
+        "@com_google_protobuf//:protobuf_lite",
+        "@com_google_protobuf//:protobuf",
+        "@sentencepiece//:sentencepiece_processor",
+        "@zlib//:zlib",
+        "@flatbuffers//:runtime_cc",
+    ],
+    alwayslink = True,
+    visibility = ["//visibility:public"],
+)
+
+# ============================================================
+# Lillup -- xcframework iOS natif Bazel
+# Source : rules_apple 3.22.0 [WORKSPACE ligne 49]
+# apple_support 1.23.1 [WORKSPACE ligne 70]
+# Approuve panel auditeurs -- Architecture v2.0 -- 13 avril 2026
+# ============================================================
+load(
+    "@build_bazel_rules_apple//apple:apple.bzl",
+    "apple_static_xcframework",
+)
+
+apple_static_xcframework(
+    name = "LiteRTLM_xcframework",
+    bundle_name = "LiteRTLM",
+    public_hdrs = ["engine.h"],
+    minimum_os_versions = {"ios": "15.0"},
+    ios = {
+        "device": ["arm64"],
+        "simulator": ["arm64"],
+    },
+    deps = [":engine_cpu", ":lillup_xcfw_deps"],
+    avoid_deps = [
+        "//runtime/components/constrained_decoding:gemma_model_constraint_provider_shared_lib",
+        "//runtime/components/constrained_decoding:gemma_model_constraint_provider_lib",
+    ],
+    visibility = ["//visibility:public"],
+)
