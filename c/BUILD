@@ -144,6 +144,27 @@ cc_library(
         "@sentencepiece//:sentencepiece_processor",
         "@zlib//:zlib",
         "@flatbuffers//:runtime_cc",
+        # ============================================================
+        # Lillup -- POC D-6 (a8') — sous-packages absl manquants
+        # H-6 empirique : lillup_xcfw_deps racine ne ramène pas
+        #   base_internal, container_internal, cord_internal, log_internal,
+        #   str_format_internal, stacktrace, symbolize, crc32c
+        # Mesure diff undefined D-6 : 205 absl + 526 protobuf + 47 spm
+        # ============================================================
+        "@com_google_absl//absl/base:base_internal",
+        "@com_google_absl//absl/base:raw_logging_internal",
+        "@com_google_absl//absl/base:low_level_alloc",
+        "@com_google_absl//absl/strings:internal",
+        "@com_google_absl//absl/strings:cord_internal",
+        "@com_google_absl//absl/strings:str_format_internal",
+        "@com_google_absl//absl/log:log_internal",
+        "@com_google_absl//absl/log",
+        "@com_google_absl//absl/log:initialize",
+        "@com_google_absl//absl/debugging:stacktrace",
+        "@com_google_absl//absl/debugging:symbolize",
+        "@com_google_absl//absl/container:hashtablez_sampler",
+        "@com_google_absl//absl/container:raw_hash_set",
+        "@com_google_absl//absl/crc:crc32c",
     ],
     alwayslink = True,
     visibility = ["//visibility:public"],
