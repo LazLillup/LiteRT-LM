@@ -145,15 +145,13 @@ cc_library(
         "@zlib//:zlib",
         "@flatbuffers//:runtime_cc",
         # ============================================================
-        # Lillup -- POC D-6 (a8') — sous-packages absl manquants
+        # Lillup -- POC D-6 (a8'') — sous-packages absl manquants (v2)
+        # v2 : retrait 3 targets absl/base:* inexistantes publique
         # H-6 empirique : lillup_xcfw_deps racine ne ramène pas
         #   base_internal, container_internal, cord_internal, log_internal,
         #   str_format_internal, stacktrace, symbolize, crc32c
         # Mesure diff undefined D-6 : 205 absl + 526 protobuf + 47 spm
         # ============================================================
-        "@com_google_absl//absl/base:base_internal",
-        "@com_google_absl//absl/base:raw_logging_internal",
-        "@com_google_absl//absl/base:low_level_alloc",
         "@com_google_absl//absl/strings:internal",
         "@com_google_absl//absl/strings:cord_internal",
         "@com_google_absl//absl/strings:str_format_internal",
