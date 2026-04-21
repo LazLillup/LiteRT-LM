@@ -170,9 +170,5 @@ apple_static_xcframework(
         "simulator": ["arm64"],
     },
     deps = [":engine_cpu", ":lillup_xcfw_deps"],
-    avoid_deps = [
-        "//runtime/components/constrained_decoding:gemma_model_constraint_provider_shared_lib",
-        "//runtime/components/constrained_decoding:gemma_model_constraint_provider_lib",
-    ],
     visibility = ["//visibility:public"],
 )
