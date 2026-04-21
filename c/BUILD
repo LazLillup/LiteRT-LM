@@ -197,3 +197,30 @@ apple_static_xcframework(
     ],
     visibility = ["//visibility:public"],
 )
+
+# ============================================================
+# Lillup -- POC (a11) DIAGNOSTIC : 2e xcframework deps-only
+# D-6 Jalon 5d, Voie 1 pattern MediaPipe (2 xcframeworks)
+# OBJECTIF : valider empirique que apple_static_xcframework
+#   accepte deps = [lillup_xcfw_deps] et produit un xcframework
+#   contenant les .o absl/protobuf/sentencepiece/zlib dans le slice
+#   ios_arm64. NE REMPLACE PAS LiteRTLM_xcframework (co-existe).
+# PATTERN : équivalent MediaPipeTaskGraphs_library de Google MediaPipe
+#   mediapipe_static_xcframework(
+#     name = "MediaPipeTaskGraphs_library",
+#     bundle_name = "MediaPipeTaskGraphs_library",
+#     deps = [":MediaPipeTaskGraphs"],
+#   )
+# Volontairement minimal : pas de public_hdrs, pas d'avoid_deps.
+# ============================================================
+apple_static_xcframework(
+    name = "LiteRTLM_deps_xcframework",
+    bundle_name = "LiteRTLM_deps",
+    minimum_os_versions = {"ios": "15.0"},
+    ios = {
+        "device": ["arm64"],
+        "simulator": ["arm64"],
+    },
+    deps = [":lillup_xcfw_deps"],
+    visibility = ["//visibility:public"],
+)
